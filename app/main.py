@@ -23,7 +23,8 @@ def main():
         print(f"{splitted_command[0]}: command not found")
         main()
     elif splitted_command[0] == "pwd":
-        print(os.getcwd)
+        current_path = os.getcwd
+        print(current_path)
     elif splitted_command[0] == "exit" and splitted_command[1] == "0":
         exit(0)
     elif splitted_command[0] == "echo":
