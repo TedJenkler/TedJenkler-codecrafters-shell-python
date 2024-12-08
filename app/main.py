@@ -18,18 +18,15 @@ def main():
     splitted_command = command.split()
     if "_" in splitted_command[0] and len(splitted_command) == 2:
         subprocess.run([splitted_command[0], splitted_command[1]])
-        main()
     elif splitted_command[0] not in COMMANDS:
         print(f"{splitted_command[0]}: command not found")
-        main()
     elif splitted_command[0] == "pwd":
-        current_path = os.getcwd
+        current_path = os.getcwd()
         print(current_path)
     elif splitted_command[0] == "exit" and splitted_command[1] == "0":
         exit(0)
     elif splitted_command[0] == "echo":
         print(" ".join(splitted_command[1:]))
-        main()
     elif splitted_command[0] == "type":
         if splitted_command[1] in COMMANDS:
             print(f"{splitted_command[1]} is a shell builtin")
@@ -41,7 +38,7 @@ def main():
                     main()
             print(f"{splitted_command[1]}: not found")
 
-        main()
+    main()
 
 if __name__ == "__main__":
     main()
