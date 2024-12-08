@@ -25,7 +25,10 @@ def main():
         print(current_path)
     elif splitted_command[0] == "cd":
         new_path = splitted_command[1]
-        if os.path.isdir(new_path):
+        if new_path == '~':
+            home_directory = os.environ.get('HOME')
+            os.chdir(home_directory)
+        elif os.path.isdir(new_path):
             os.chdir(new_path)
         else:
             print(f"cd: {new_path}: No such file or directory")
