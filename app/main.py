@@ -1,6 +1,11 @@
 import sys
+import os
 
 COMMANDS = ['exit', 'echo', 'type']
+
+path_variable = os.environ.get("PATH")
+
+path_list = path_variable.split(':')
 
 def main():
 
@@ -22,7 +27,13 @@ def main():
         if splitted_command[1] in COMMANDS:
             print(f"{splitted_command[1]} is a shell builtin")
         else:
+            for directory in path_list:
+                potential_path = os.path.join(directory, splitted_command[1])
+                if os.path.isfile(potential_path) and os.access(potential_path, os.X_OK):
+                    print(potential_path)
+                    main()
             print(f"{splitted_command[1]}: not found")
+
         main()
 
 if __name__ == "__main__":
