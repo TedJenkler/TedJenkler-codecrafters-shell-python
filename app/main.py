@@ -1,5 +1,6 @@
 import sys
 import os
+import subprocess
 
 COMMANDS = ['exit', 'echo', 'type']
 
@@ -15,13 +16,12 @@ def main():
     command = input()
 
     splitted_command = command.split()
-    print("_" in splitted_command[0])
-    if splitted_command[0] not in COMMANDS:
+    if "_" in splitted_command[0] and len(splitted_command) == 2:
+        subprocess.run([splitted_command[0], splitted_command[1]])
+        main()
+    elif splitted_command[0] not in COMMANDS:
         print(f"{splitted_command[0]}: command not found")
         main()
-    elif "_" in splitted_command[0]:
-        function, parameter = splitted_command[0].split("_")
-        print(function, parameter)
     elif splitted_command[0] == "exit" and splitted_command[1] == "0":
         exit(0)
     elif splitted_command[0] == "echo":
