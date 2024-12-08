@@ -2,7 +2,7 @@ import sys
 import os
 import subprocess
 
-COMMANDS = ['exit', 'echo', 'type', 'pwd']
+COMMANDS = ['exit', 'echo', 'type', 'pwd', 'cd']
 
 path_variable = os.environ.get("PATH")
 
@@ -23,6 +23,12 @@ def main():
     elif splitted_command[0] == "pwd":
         current_path = os.getcwd()
         print(current_path)
+    elif splitted_command[0] == "cd":
+        new_path = splitted_command[1]
+        if os.path.isdir(new_path):
+            os.chdir(new_path)
+        else:
+            print(f"cd: {new_path}: No such file or directory")
     elif splitted_command[0] == "exit" and splitted_command[1] == "0":
         exit(0)
     elif splitted_command[0] == "echo":
