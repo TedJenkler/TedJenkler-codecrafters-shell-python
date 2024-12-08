@@ -2,7 +2,7 @@ import sys
 import os
 import subprocess
 
-COMMANDS = ['exit', 'echo', 'type']
+COMMANDS = ['exit', 'echo', 'type', 'pwd']
 
 path_variable = os.environ.get("PATH")
 
@@ -22,6 +22,8 @@ def main():
     elif splitted_command[0] not in COMMANDS:
         print(f"{splitted_command[0]}: command not found")
         main()
+    elif splitted_command[0] == "pwd":
+        print(os.getcwd)
     elif splitted_command[0] == "exit" and splitted_command[1] == "0":
         exit(0)
     elif splitted_command[0] == "echo":
