@@ -1,6 +1,8 @@
 import sys
 import os
 import subprocess
+import re
+import shlex
 
 COMMANDS = ['exit', 'echo', 'type', 'pwd', 'cd', 'cat']
 
@@ -21,13 +23,16 @@ def main():
     elif splitted_command[0] not in COMMANDS:
         print(f"{splitted_command[0]}: command not found")
     elif splitted_command[0] == "cat":
-        splitted = command[4:].split("' '")
+        splitted = shlex.split(command[4:])
         clean = []
         result = []
         for path in splitted:
             x = path.split("f")
-            clean.append(x[0].lstrip("'"))
-            clean.append(f"f{x[1]}".rstrip("'"))
+            for i, values in enumerate(x):
+                if i % 2 != 0:
+                    clean.append("f" + x[i])
+                else:
+                    clean.append(x[i])
         for i in range(0, len(clean) - 1, 2):
             directory = clean[i]
             target_file = clean[i + 1]
@@ -54,10 +59,8 @@ def main():
     elif splitted_command[0] == "exit" and splitted_command[1] == "0":
         exit(0)
     elif splitted_command[0] == "echo":
-        if "'" in command[5]:
-            print(command[5:].strip("'"))
-        else:
-            print(" ".join(splitted_command[1:]))
+        x = shlex.split(command, posix=True)
+        print(" ".join(x[1:]))
     elif splitted_command[0] == "type":
         if splitted_command[1] in COMMANDS:
             if splitted_command[1] == "cat":
