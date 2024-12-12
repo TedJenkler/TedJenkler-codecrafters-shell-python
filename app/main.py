@@ -27,7 +27,7 @@ def main():
         clean = []
         result = []
         for path in splitted:
-            x = path.split("f")
+            x = path.split("f", 1)
             for i, values in enumerate(x):
                 if i % 2 != 0:
                     clean.append("f" + x[i])
