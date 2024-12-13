@@ -24,26 +24,36 @@ def main():
         print(f"{splitted_command[0]}: command not found")
     elif splitted_command[0] == "cat":
         splitted = shlex.split(command[4:])
-        clean = []
         result = []
+    
         for path in splitted:
-            x = path.split("f", 1)
-            for i, values in enumerate(x):
-                if i % 2 != 0:
-                    clean.append("f" + x[i])
-                else:
-                    clean.append(x[i])
-        for i in range(0, len(clean) - 1, 2):
-            directory = clean[i]
-            target_file = clean[i + 1]
+            directory, target_file = os.path.split(path)
+        
+            if not directory or not target_file:
+                print(f"Invalid path: '{path}'")
+                continue
+        
+            if not os.path.isdir(directory):
+                print(f"Directory '{directory}' does not exist.")
+                continue
+        
+            found = False
             for root, dirs, files in os.walk(directory):
                 if target_file in files:
                     file_path = os.path.join(root, target_file)
                     with open(file_path, 'r') as file:
                         content = file.read()
-                        result.append(content)
+                    result.append(content)
+                    found = True
                     break
-        print("".join(result).strip())
+        
+            if not found:
+                print(f"File '{target_file}' not found in directory '{directory}'")
+
+        if result:
+            print("".join(result).strip())
+        else:
+            print("No files were found.")
     elif splitted_command[0] == "pwd":
         current_path = os.getcwd()
         print(current_path)
