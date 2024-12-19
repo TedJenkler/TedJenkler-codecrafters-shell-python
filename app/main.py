@@ -4,16 +4,25 @@ import subprocess
 import re
 import shlex
 
-COMMANDS = ['exit', 'echo', 'type', 'pwd', 'cd', 'cat', 'exe']
+COMMANDS = {
+    'exit': 'exit_command',
+    'echo': 'echo_command',
+    'type': 'type_command',
+    'pwd': 'pwd_command',
+    'cd': 'cd_command',
+    'cat': 'cat_command',
+    'exe': 'exe_command'
+}
 
 path_variable = os.environ.get("PATH")
 path_list = path_variable.split(':')
 
-def cat(splitted):
+def cat_command(splitted, command):
     """
     This function handles the 'cat' command. It attempts to read files from
     the specified directories and prints their contents if they exist.
     """
+    splitted = shlex.split(command[4:])
     result = []
     for path in splitted:
         directory, target_file = os.path.split(path)
@@ -44,11 +53,12 @@ def cat(splitted):
     else:
         print("No files were found.")
 
-def exe(splitted):
+def exe_command(splitted_command, command):
     """
     This function handles the 'exe' command. It attempts to open and read the
     contents of the specified file.
     """
+    splitted = splitted_command[-1]
     try:
         with open(splitted, 'r') as file:
             contents = file.read()
@@ -58,18 +68,19 @@ def exe(splitted):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def pwd():
+def pwd_command(splitted_command, command):
     """
     This function handles the 'pwd' command. It prints the current working directory.
     """
     current_path = os.getcwd()
     print(current_path)
 
-def cd(new_path):
+def cd_command(splitted_command, command):
     """
     This function handles the 'cd' command. It attempts to change the current
     directory to the specified path.
     """
+    new_path = splitted_command[1]
     if new_path == '~':
         home_directory = os.environ.get('HOME')
         os.chdir(home_directory)
@@ -78,7 +89,7 @@ def cd(new_path):
     else:
         print(f"cd: {new_path}: No such file or directory")
 
-def echo(command):
+def echo_command(splitted_command, command):
     """
     This function handles the 'echo' command. It splits the command and prints
     the arguments passed to echo.
@@ -86,7 +97,7 @@ def echo(command):
     x = shlex.split(command, posix=True)
     print(" ".join(x[1:]))
 
-def type_command(splitted_command):
+def type_command(splitted_command, command):
     """
     This function handles the 'type' command. It checks whether the specified
     command is a shell builtin or a file and prints the corresponding message.
@@ -104,8 +115,15 @@ def type_command(splitted_command):
                 main()
         print(f"{splitted_command[1]}: not found")
 
+def exit_command(splitted_command, command):
+    """
+    This function handles the 'exit' command and exits the program if the argument is '0'.
+    """
+    if len(splitted_command) == 2 and splitted_command[1] == "0":
+        exit(0)
+
 def main():
-    
+
     sys.stdout.write("$ ")
 
     # Wait for user input
@@ -117,25 +135,10 @@ def main():
     if "_" in splitted_command[0] and len(splitted_command) == 2:
         # Execute a subprocess if the command is a valid executable
         subprocess.run([splitted_command[0], splitted_command[1]])
-    elif splitted_command[0] not in COMMANDS:
+    elif splitted_command[0] in COMMANDS:
+        globals()[COMMANDS[splitted_command[0]]](splitted_command, command)
+    else:
         print(f"{splitted_command[0]}: command not found")
-    elif splitted_command[0] == "exe":
-        splitted = splitted_command[-1]
-        exe(splitted)
-    elif splitted_command[0] == "cat":
-        splitted = shlex.split(command[4:])
-        cat(splitted)
-    elif splitted_command[0] == "pwd":
-        pwd()
-    elif splitted_command[0] == "cd":
-        new_path = splitted_command[1]
-        cd(new_path)
-    elif splitted_command[0] == "exit" and len(splitted_command) == 2 and splitted_command[1] == "0":
-        exit(0)
-    elif splitted_command[0] == "echo":
-        echo(command)
-    elif splitted_command[0] == "type":
-        type_command(splitted_command)
     
     main()
 
