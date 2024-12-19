@@ -1,34 +1,27 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/3b656599-5df6-4d73-b0d9-6b9fa03add2b)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Build Your Own Shell - Python Implementation
 
-This is a starting point for Python solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+This repository contains a Python implementation of a POSIX-compliant shell, built as part of the **"Build Your Own Shell"** challenge. The shell can interpret and execute a variety of commands, both built-in and external, and provides a basic REPL (Read-Eval-Print Loop) interface.
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
+## Features
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+- **Built-in commands**:
+  - `cd`: Change the current directory
+  - `pwd`: Print the current working directory
+  - `echo`: Print text to the terminal
+  - `cat`: Display the contents of a file
+  - `exe`: Execute a file by reading and printing its contents
+  - `type`: Show whether a command is a built-in or external command
+  - `exit`: Exit the shell
+  
+- **Support for external commands**: You can run executable commands if they are available in your system's `PATH`.
 
-# Passing the first stage
+## Requirements
 
-The entry point for your `shell` implementation is in `app/main.py`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+- Python 3.11 or higher
 
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
-```
+## How to Run
 
-Time to move on to the next stage!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `python (3.11)` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `app/main.py`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+1. Clone this repository to your local machine:
+   ```bash
+   git clone https://github.com/your-username/build-your-own-shell.git
+   cd build-your-own-shell
