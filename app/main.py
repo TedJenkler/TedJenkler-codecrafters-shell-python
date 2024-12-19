@@ -17,6 +17,16 @@ COMMANDS = {
 path_variable = os.environ.get("PATH")
 path_list = path_variable.split(':')
 
+def read_file(file_path):
+    """ Helper function to read the contents of a file safely. """
+    try:
+        with open(file_path, 'r') as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        return f"Error: File '{file_path}' not found."
+    except Exception as e:
+        return f"An error occurred: {e}"
+
 def cat_command(splitted, command):
     """
     This function handles the 'cat' command. It attempts to read files from
@@ -54,19 +64,10 @@ def cat_command(splitted, command):
         print("No files were found.")
 
 def exe_command(splitted_command, command):
-    """
-    This function handles the 'exe' command. It attempts to open and read the
-    contents of the specified file.
-    """
-    splitted = splitted_command[-1]
-    try:
-        with open(splitted, 'r') as file:
-            contents = file.read()
-            print("".join(contents).strip())
-    except FileNotFoundError:
-        print(f"Error: File '{splitted}' not found.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    """ Handles the 'exe' command. Reads the contents of the specified file. """
+    file_path = splitted_command[-1]
+    content = read_file(file_path)
+    print(content)
 
 def pwd_command(splitted_command, command):
     """
